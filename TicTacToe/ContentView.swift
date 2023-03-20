@@ -6,12 +6,28 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ContentView: View {
     @State private var board: [[String]] = Array(repeating: Array(repeating: "", count: 3), count: 3)
     @State private var currentPlayer: String = "X"
     @State private var gameOver: Bool = false
     @State private var winner: String? = nil
+    
+    func lightHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
+    }
+    
+    func mediumHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+    }
+    
+    func heavyHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
+    }
 
     var body: some View {
         VStack(spacing: 10) {
@@ -20,6 +36,7 @@ struct ContentView: View {
                     ForEach(0..<3) { column in
                         Button(action: {
                             makeMove(row: row, column: column)
+                            lightHaptic()
                         }) {
                             Text(board[row][column])
                                 .font(.system(size: 50))
@@ -42,6 +59,7 @@ struct ContentView: View {
                 
                 Button(action: {
                     resetGame()
+                    heavyHaptic()
                 }) {
                     Text("Начать заново")
                         .font(.system(size: 30))
@@ -109,6 +127,7 @@ struct ContentView: View {
         if let move = bestMove {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 makeMove(row: move.row, column: move.column)
+                mediumHaptic()
             }
         }
     }
