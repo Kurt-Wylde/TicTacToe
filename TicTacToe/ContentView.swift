@@ -5,25 +5,9 @@
 //
 
 import SwiftUI
-import UIKit
 
 struct ContentView: View {
     @State private var gameState = TicTacToeGameState()
-    
-    func lightHaptic() {
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
-    }
-    
-    func mediumHaptic() {
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
-    }
-    
-    func heavyHaptic() {
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
-    }
     
     var body: some View {
         VStack(spacing: 10) {

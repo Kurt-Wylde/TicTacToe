@@ -27,6 +27,7 @@ func makeMove(gameState: inout TicTacToeGameState, row: Int, column: Int) -> Boo
                 let move = computerMove(gameState: &gameState)
                 if let move = move {
                     _ = makeMove(gameState: &gameState, row: move.0, column: move.1)
+                    mediumHaptic()
                 }
             }
         } else {
