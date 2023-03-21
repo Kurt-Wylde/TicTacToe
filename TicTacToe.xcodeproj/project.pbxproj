@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F805493F29C90B6700BAF9A8 /* TicTacToeGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = F805493E29C90B6700BAF9A8 /* TicTacToeGame.swift */; };
 		F81C6B5229C877A100A41596 /* TicTacToeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81C6B5129C877A100A41596 /* TicTacToeApp.swift */; };
 		F81C6B5429C877A100A41596 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81C6B5329C877A100A41596 /* ContentView.swift */; };
 		F81C6B5629C877A200A41596 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F81C6B5529C877A200A41596 /* Assets.xcassets */; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F805493E29C90B6700BAF9A8 /* TicTacToeGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacToeGame.swift; sourceTree = "<group>"; };
 		F81C6B4E29C877A100A41596 /* TicTacToe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacToe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F81C6B5129C877A100A41596 /* TicTacToeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacToeApp.swift; sourceTree = "<group>"; };
 		F81C6B5329C877A100A41596 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -52,6 +54,7 @@
 			isa = PBXGroup;
 			children = (
 				F81C6B5129C877A100A41596 /* TicTacToeApp.swift */,
+				F805493E29C90B6700BAF9A8 /* TicTacToeGame.swift */,
 				F81C6B5329C877A100A41596 /* ContentView.swift */,
 				F81C6B5529C877A200A41596 /* Assets.xcassets */,
 				F81C6B5729C877A200A41596 /* Preview Content */,
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F805493F29C90B6700BAF9A8 /* TicTacToeGame.swift in Sources */,
 				F81C6B5429C877A100A41596 /* ContentView.swift in Sources */,
 				F81C6B5229C877A100A41596 /* TicTacToeApp.swift in Sources */,
 			);
