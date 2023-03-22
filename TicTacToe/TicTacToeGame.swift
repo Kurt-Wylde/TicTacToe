@@ -16,6 +16,10 @@ struct TicTacToeGameState {
 }
 
 func makeMove(gameState: inout TicTacToeGameState, row: Int, column: Int) -> Bool {
+    // Проверяем, окончена ли игра
+    if gameState.gameOver {
+        return false
+    }
     if gameState.board[row][column] == "" {
         gameState.board[row][column] = gameState.currentPlayer
         
