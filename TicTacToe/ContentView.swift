@@ -18,13 +18,7 @@ struct ContentView: View {
                             _ = makeMove(gameState: &gameState, row: row, column: column)
                             lightHaptic()
                         }) {
-                            Text(gameState.board[row][column])
-                                .font(.system(size: 50))
-                                .frame(width: 70, height: 70)
-                                .background(Color.white)
-                                .foregroundColor(gameState.board[row][column] == "X" ? Color.blue : gameState.board[row][column] == "O" ? Color.red : Color.white)
-                                .cornerRadius(10)
-                                .shadow(color: .black, radius: 2, x: 0, y: 2)
+                            cellView(row: row, column: column)
                         }
                     }
                 }
@@ -56,14 +50,18 @@ struct ContentView: View {
     }
     
     func cellView(row: Int, column: Int) -> some View {
-        Text(gameState.board[row][column])
-            .font(.system(size: 48))
-            .frame(width: 100, height: 100)
-            .background(gameState.board[row][column] == "" ? Color(.systemGray6) : Color(.systemBackground))
-            .border(Color.black, width: 1)
-            .foregroundColor(gameState.board[row][column] == "X" ? Color.red : Color.blue)
-            .animation(.easeInOut(duration: 0.2), value: gameState.board[row][column])
+        let isInWinningLine = gameState.winningLine?.contains(where: { $0 == (row, column) }) ?? false
+        let cellColor = isInWinningLine ? Color.yellow : Color.white
+
+        return Text(gameState.board[row][column])
+            .font(.system(size: 50))
+            .frame(width: 70, height: 70)
+            .background(cellColor)
+            .foregroundColor(gameState.board[row][column] == "X" ? Color.blue : gameState.board[row][column] == "O" ? Color.red : Color.white)
+            .cornerRadius(10)
+            .shadow(color: .black, radius: 2, x: 0, y: 2)
     }
+
 }
 
 struct ContentView_Previews: PreviewProvider {
