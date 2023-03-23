@@ -13,9 +13,10 @@ struct TicTacToeGameState {
     var gameOver: Bool = false
     var winner: String? = nil
     var winningLine: [(Int, Int)]? = nil
+    var difficulty: Difficulty = .medium
 }
 
-func makeMove(gameState: inout TicTacToeGameState, row: Int, column: Int) -> Bool {
+func makeMove(gameState: inout TicTacToeGameState, row: Int, column: Int, difficulty: Difficulty) -> Bool {
     // Проверяем, окончена ли игра
     if gameState.gameOver {
         return false
@@ -32,9 +33,10 @@ func makeMove(gameState: inout TicTacToeGameState, row: Int, column: Int) -> Boo
         } else if gameState.board.joined().contains("") {
             gameState.currentPlayer = gameState.currentPlayer == "X" ? "O" : "X"
             if gameState.currentPlayer == "O" {
-                let move = computerMove(gameState: &gameState)
+                gameState.difficulty = difficulty
+                let move: (Int, Int)? = computerMove(gameState: &gameState, difficulty: difficulty)
                 if let move = move {
-                    _ = makeMove(gameState: &gameState, row: move.0, column: move.1)
+                    _ = makeMove(gameState: &gameState, row: move.0, column: move.1, difficulty: difficulty)
                     mediumHaptic()
                 }
             }
@@ -47,6 +49,7 @@ func makeMove(gameState: inout TicTacToeGameState, row: Int, column: Int) -> Boo
     
     return false
 }
+
 
 func checkWinner(gameState: TicTacToeGameState) -> (String?, [(Int, Int)]?) {
     // Проверка горизонталей
@@ -92,7 +95,32 @@ func resetGame(gameState: inout TicTacToeGameState) {
     gameState.winningLine = nil
     }
 
-func computerMove(gameState: inout TicTacToeGameState) -> (Int, Int)? {
+func randomMove(gameState: TicTacToeGameState) -> (Int, Int)? {
+    var availableMoves: [(Int, Int)] = []
+    for row in 0..<3 {
+        for column in 0..<3 {
+            if gameState.board[row][column] == "" {
+                availableMoves.append((row, column))
+            }
+        }
+    }
+    return availableMoves.randomElement()
+}
+
+func computerMove(gameState: inout TicTacToeGameState, difficulty: Difficulty) -> (Int, Int)? {
+    switch difficulty {
+    case .easy:
+        return randomMove(gameState: gameState)
+    case .medium:
+        return Bool.random() ? randomMove(gameState: gameState) : bestMove(gameState: &gameState, difficulty: difficulty)
+    case .impossible:
+        return bestMove(gameState: &gameState, difficulty: difficulty)
+    }
+}
+
+
+
+func bestMove(gameState: inout TicTacToeGameState, difficulty: Difficulty) -> (Int, Int)? {
     var bestScore = Int.min
     var bestMove: (row: Int, column: Int)?
 
@@ -101,7 +129,7 @@ func computerMove(gameState: inout TicTacToeGameState) -> (Int, Int)? {
             if gameState.board[row][column] == "" {
                 var newGameState = gameState
                 newGameState.board[row][column] = "O"
-                let score = minimax(gameState: newGameState, depth: 0, isMaximizing: false, alpha: Int.min, beta: Int.max)
+                let score = minimax(gameState: newGameState, depth: 0, isMaximizing: false, alpha: Int.min, beta: Int.max, difficulty: difficulty)
                 if score > bestScore {
                     bestScore = score
                     bestMove = (row, column)
@@ -109,11 +137,10 @@ func computerMove(gameState: inout TicTacToeGameState) -> (Int, Int)? {
             }
         }
     }
-
     return bestMove
 }
 
-func minimax(gameState: TicTacToeGameState, depth: Int, isMaximizing: Bool, alpha: Int, beta: Int) -> Int {
+func minimax(gameState: TicTacToeGameState, depth: Int, isMaximizing: Bool, alpha: Int, beta: Int, difficulty: Difficulty) -> Int {
     let checkResult = checkWinner(gameState: gameState)
     let winner = checkResult.0
     
@@ -135,7 +162,7 @@ func minimax(gameState: TicTacToeGameState, depth: Int, isMaximizing: Bool, alph
                 if gameState.board[row][column] == "" {
                     var newGameState = gameState
                     newGameState.board[row][column] = "O"
-                    let eval = minimax(gameState: newGameState, depth: depth + 1, isMaximizing: false, alpha: a, beta: beta)
+                    let eval = minimax(gameState: newGameState, depth: depth + 1, isMaximizing: false, alpha: a, beta: beta, difficulty: difficulty)
                     maxEval = max(maxEval, eval)
                     a = max(a, eval)
                     if beta <= a {
@@ -153,7 +180,7 @@ func minimax(gameState: TicTacToeGameState, depth: Int, isMaximizing: Bool, alph
                 if gameState.board[row][column] == "" {
                     var newGameState = gameState
                     newGameState.board[row][column] = "X"
-                    let eval = minimax(gameState: newGameState, depth: depth + 1, isMaximizing: true, alpha: alpha, beta: b)
+                    let eval = minimax(gameState: newGameState, depth: depth + 1, isMaximizing: true, alpha: alpha, beta: b, difficulty: difficulty)
                     minEval = min(minEval, eval)
                     b = min(b, eval)
                     if b <= alpha {
